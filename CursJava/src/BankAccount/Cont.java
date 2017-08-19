@@ -8,10 +8,11 @@ public class Cont {
     private int numarCont;
     private int sold;
 
-    public int getSold(){
+    public int getSold() {
         return sold;
     }
-    public void setSold(int suma){
+
+    public void setSold(int suma) {
         sold = suma;
     }
 
@@ -27,6 +28,9 @@ public class Cont {
     public void afiseazaSold() {
         System.out.println("Sold este: " + sold + " Ron.");
     }
+
+    public int afiseazaSoldInt() {
+        System.out.println("Ai disponibil: " + sold);return sold; }
 
     public void depoziteazaSold(int suma) {
         System.out.println("S-a depozitat " + suma + " Ron.");
