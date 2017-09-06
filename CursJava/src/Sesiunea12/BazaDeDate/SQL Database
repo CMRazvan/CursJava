@@ -1,0 +1,18 @@
+SQL Comenzi pentru baza de date
+
+Cum se Creaza o baza de date?
+
+Create Database [NUMA_BAZA_DE_DATE]
+
+ex.
+--------------------------------------
+CREATE DATABASE TEST
+
+Cum se Sterge o baza de date?
+
+Drop Database [NUMA_BAZA_DE_DATE]
+
+ex.
+
+DROP DATABASE TEST
+--------------------------------------
