@@ -7,19 +7,49 @@ import java.util.Scanner;
 public class BancaNoastra {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         System.out.println("Salut bine ai venit la Banca Noastra cu DB");
-        System.out.println("---------------------------");
-        System.out.println("Cu ce te putem ajuta?" +
-                "\n1.Creeaza Cont" +
-                "\n2.Verifica Cont" +
-                "\n3.Adauga Bani in cont" +
-                "\n4.Retrage Bani din cont" +
-                "\n5.Depoziteaza Bani" +
-                "\n6.Imprumuta Bani" +
-                "\n7.Iesi din aplicatie" +
-                "\n---------------------------");
-        Scanner keyboard = new Scanner(System.in);
-        //readDB();
 
+        int option;
+        int count = 0;
+        Scanner keyboardscan = new Scanner(System.in);
+        do {
+
+            System.out.println("---------------------------");
+            System.out.println("Cu ce te putem ajuta?" +
+                    "\n1.Creeaza Cont" +
+                    "\n2.Verifica Cont" +
+                    "\n3.Adauga Bani in cont" +
+                    "\n4.Retrage Bani din cont" +
+                    "\n5.Depoziteaza Bani" +
+                    "\n6.Imprumuta Bani" +
+                    "\n7.Iesi din aplicatie" +
+                    "\n---------------------------");
+            option = keyboardscan.nextInt();
+            if (option == 1) {
+                System.out.println("Creez cont");
+            } else if (option == 2) {
+                System.out.println("Verific Cont");
+            } else if (option == 3) {
+                System.out.println("Adauga Bani in Cont");
+            } else if (option == 4) {
+                System.out.println("Retrage Bani din Cont");
+            } else if (option == 5) {
+                System.out.println("Depoziteaza Bani in Cont");
+            } else if (option == 6) {
+                System.out.println("Imprumuta Bani de la Banca");
+            } else if (option == 7) {
+                System.out.println("Multumim pentru alegerea facuta");
+                option = 0;
+            } else {
+                System.out.println("NU AI ALES  OBTIUNE CORECTA! ALEGE DIN NOU");
+                count++;
+                if (count == 4) {
+
+                    option = 0;
+                    System.out.println("Pentru ca ai incercat de " + count + " si nu ai ales o obtiune corecta TE-AM DECONECTAT!!");
+                }
+            }
+
+        } while (option != 0);
     }
 
     public static void insertDB() throws ClassNotFoundException, SQLException {
@@ -41,6 +71,7 @@ public class BancaNoastra {
         pSt.close();
         conn.close();
     }
+
     public static void readDB() throws SQLException, ClassNotFoundException {
         // 1. load driver, no longer needed in new versions of JDBC
         Class.forName("org.postgresql.Driver");
@@ -68,6 +99,7 @@ public class BancaNoastra {
         st.close();
         conn.close();
     }
+
     public static void updateDB() throws ClassNotFoundException, SQLException {
         // 1. load driver, no longer needed in new versions of JDBC
         Class.forName("org.postgresql.Driver");
@@ -88,6 +120,7 @@ public class BancaNoastra {
         pSt.close();
         conn.close();
     }
+
     public static void deleteDB() throws ClassNotFoundException, SQLException {
         // 1. load driver, no longer needed in new versions of JDBC
         Class.forName("org.postgresql.Driver");
