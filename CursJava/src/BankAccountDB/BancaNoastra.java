@@ -22,6 +22,8 @@ public class BancaNoastra {
                     "\n5.Depoziteaza Bani" +
                     "\n6.Imprumuta Bani" +
                     "\n7.Iesi din aplicatie" +
+                    "\n---------------------------" +
+                    "\n-----------Ce Alegi--------" +
                     "\n---------------------------");
             option = keyboardscan.nextInt();
             if (option == 1) {
@@ -33,7 +35,11 @@ public class BancaNoastra {
                 createUserDB(newUser, passForNewUser);
             } else if (option == 2) {
                 System.out.println("Verific Cont");
-                readDB();
+                System.out.println("Numele");
+                String numeVerific = keyboardscan.next();
+                System.out.println("Parola");
+                String passVerific = keyboardscan.next();
+                readVerificareContDB(numeVerific, passVerific);
             } else if (option == 3) {
                 System.out.println("Adauga Bani in Cont");
                 System.out.println("Cati Bani doresti sa depui?");
@@ -44,7 +50,6 @@ public class BancaNoastra {
                 int idUserCont = keyboardscan.nextInt();
                 System.out.println("Introdu Parola");
                 int passUserCont = keyboardscan.nextInt();
-                //updateBaniContDB(baniDepunere, idUserCont, passUserCont);
                 updateBaniContDB(baniDepunere, idUserCont, passUserCont);
             } else if (option == 4) {
                 System.out.println("Retrage Bani din Cont");
@@ -116,6 +121,45 @@ public class BancaNoastra {
         conn.close();
     }
 
+    public static void readVerificareContDB(String numeCont, String passCont) throws SQLException, ClassNotFoundException {
+        // 1. load driver, no longer needed in new versions of JDBC
+        Class.forName("org.postgresql.Driver");
+        // 2. define connection params to db
+        final String URL = "jdbc:postgresql://localhost/BankAccount";
+        final String USERNAME = "postgres";
+        final String PASSWORD = "1234";
+        // 3. obtain a connection
+        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        // 4. create a query statement
+        Statement st = conn.createStatement();
+        // 5. execute a query SELECT iduser, userusername, usersold FROM public.users;
+        ResultSet rs = st.executeQuery("SELECT * FROM public.users WHERE userusername='" + numeCont.trim() + "' AND userpass='" + passCont + "'");
+//        PreparedStatement pSt = conn.prepareStatement("SELECT * FROM public.users WHERE userusername=? AND userpass=?");
+//        pSt.setString(1, numeCont);
+//        pSt.setInt(2, passCont);
+        // 5. execute a prepared statement
+        //int rowsUpdated = pSt.executeUpdate();
+        // 6. iterate the result set and print the values
+        System.out.println("| ID     |   Nume                      |   Sold            |   Depozit         |   Imprumut    ");
+        while (rs.next()) {
+            System.out.print("| ");
+            System.out.print(rs.getString("iduser"));
+            System.out.print("      |   ");
+            System.out.print(rs.getString("userusername"));
+            System.out.print("      |   ");
+            System.out.print(rs.getString("usersold"));
+            System.out.print("      |   ");
+            System.out.print(rs.getString("userdepozit"));
+            System.out.print("      |   ");
+            System.out.println(rs.getString("userimprumut"));
+
+        }
+        // 7. close the objects
+        rs.close();
+        st.close();
+        conn.close();
+    }
+
     public static void readDB() throws SQLException, ClassNotFoundException {
         // 1. load driver, no longer needed in new versions of JDBC
         Class.forName("org.postgresql.Driver");
@@ -135,9 +179,9 @@ public class BancaNoastra {
             System.out.print("| ");
             System.out.print(rs.getString("iduser"));
             System.out.print("      |   ");
-            System.out.print(rs.getString("userusername"));
-            System.out.print("      |   ");
-            System.out.println(rs.getString("usersold"));
+            System.out.println(rs.getString("userusername"));
+            //System.out.print("      |   ");
+            //System.out.println(rs.getString("usersold"));
 
         }
         // 7. close the objects
@@ -146,7 +190,6 @@ public class BancaNoastra {
         conn.close();
     }
 
-    //(int baniDepun, int idUser, int passUser)
     public static void updateBaniContDB(int baniDepun, int idUser, int passUser) throws ClassNotFoundException, SQLException {
 
         // 1. load driver, no longer needed in new versions of JDBC
@@ -159,37 +202,33 @@ public class BancaNoastra {
         Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         // 4. create a query statement
         Statement st = conn.createStatement();
-        // 5. execute a query SELECT iduser, userusername, usersold FROM public.users;
+        // 5. execute a query
         ResultSet rs = st.executeQuery("SELECT * FROM public.users where iduser=" + idUser);
         // 6. iterate the result set and print the values
-        //System.out.println("| ID     |   Nume                      |   Sold");
         int countpasserr = 0;
         while (rs.next()) {
-//            System.out.print("| ");
-//            System.out.print(rs.getString("iduser"));
-//            System.out.print("      |   ");
-//            System.out.print(rs.getString("userusername"));
-//            System.out.print("      |   ");
-//            System.out.println(rs.getString("usersold"));
+
             rs.getInt("iduser");
             int userStaticPass = rs.getInt("userpass");
             rs.getString("userusername");
-            rs.getString("usersold");
+            int soldusercont = rs.getInt("usersold");
 
             if (userStaticPass == passUser) {
                 // 4. create a query statement
+                int totalbani = soldusercont + baniDepun;
                 PreparedStatement pSt = conn.prepareStatement("UPDATE public.users SET usersold=? WHERE iduser=?");
-                pSt.setInt(1, baniDepun);
+                pSt.setInt(1, totalbani);
                 pSt.setInt(2, idUser);
                 // 5. execute a prepared statement
                 int rowsUpdated = pSt.executeUpdate();
                 // 6. close the objects
                 pSt.close();
                 conn.close();
-                System.out.println("Ai adaugat contului tau: " + baniDepun);
-            }else {
+
+                System.out.println("Ai avut in cont " + soldusercont + " si ai mai adaugat contului tau: " + baniDepun + " si ai un total de " + totalbani);
+            } else {
                 System.out.println("Parola Gresita");
-// tre sa fac coutnter cu error pass
+                countpasserr++;
             }
         }
 
