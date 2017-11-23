@@ -2,7 +2,7 @@ package Sesiunea2;
 
 public class S2Ex2 {
     public static void main(String[] args) {
-        System.out.println("Aici vom face socoteli");
+        System.out.println("Aici vom invata numerele litere si socotelile");
 
 
         //Avem 2 numere declarate si trebuie sa le adunam
@@ -27,6 +27,7 @@ public class S2Ex2 {
         //folosim tipuri de numere diferite
         numarA = 23;
         double numarC = 100.5; // aici avem numar cu virgula
+        //aveti grija cand folositi tipuri diferite deoarece finalul adica unde va fi stocat numarul final trebuie sa fie si finalul rezultatlui dintre cele doua numere
 
         double adunareDouble = numarA + numarC; // aici adunam un numar cu virugla si unu fara virgula si rezultatul trebuie sa fie cu virgula deoarece ne asteptam sa vina numere cu virugla
         System.out.println(adunareDouble);
